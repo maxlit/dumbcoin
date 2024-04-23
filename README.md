@@ -1,7 +1,20 @@
 
 # cryptos
 
-Just me developing a pure Python from-scratch zero-dependency implementation of Bitcoin for educational purposes, including all of the under the hood crypto primitives such as SHA-256 and elliptic curves over finite fields math.
+Bitcoin is hard to grasp since the parameters are chosen to make the coin unbreakable, however, for educational purposes we need something we can break.
+Thus, let me introduce **Dumbcoin** (based on `Z13` (group)[https://en.wikipedia.org/wiki/Cyclic_group]), e.g. the public key could be as simple as `(8,3)` for secret key `3`.
+It makes it easier to grasp, but vulnerable, however, it still has mechanics of a coin, kind of "I'm not like them, but I can pretend".
+
+Fork of (karpathy/cryptos)[https://github.com/karpathy/cryptos]  
+
+**WARNING**: don't put any money into this coin! while some sh*tcoins can be relatively safe, this one isn't (not even close) by design. In plain text: this is a f***ing retarded coin!
+
+# Differences with Bitcoin
+
+For comparison, in bitcoin elliptic group the secret key of `3` corresponds to the secret key of `(112711660439710606056748659173929673102114977341539408544630613555209775888121, 25583027980570883691656905877401976406448868254816295069919888960541586679410)`.
+
+
+
 
 ### SHA-256
 

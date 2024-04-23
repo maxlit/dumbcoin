@@ -9,6 +9,7 @@ import time
 
 from .curves import Point
 from .bitcoin import BITCOIN
+from .dumbcoin import DUMBCOIN
 from .sha256 import sha256
 from .ripemd160 import ripemd160
 
@@ -35,17 +36,26 @@ class PublicKey(Point):
     encoding / decoding functionality that this class implements.
     """
 
+    COIN = BITCOIN  # Set default value for COIN to be BITCOIN
+
+    def __init__(self, *args, **kwargs):
+        coin = kwargs.pop('COIN', None)
+        if coin is not None:
+            self.COIN = coin
+        super().__init__(*args, **kwargs)
+
     @classmethod
     def from_point(cls, pt: Point):
         """ promote a Point to be a PublicKey """
         return cls(pt.curve, pt.x, pt.y)
-
+    
     @classmethod
-    def from_sk(cls, sk):
+    def from_sk(cls, sk, COIN=None):
         """ sk can be an int or a hex string """
         assert isinstance(sk, (int, str))
         sk = int(sk, 16) if isinstance(sk, str) else sk
-        pk = sk * BITCOIN.gen.G
+        coin = COIN if COIN is not None else cls.COIN
+        pk = sk * coin.gen.G
         return cls.from_point(pk)
 
     @classmethod
@@ -57,7 +67,7 @@ class PublicKey(Point):
         if b[0] == 4:
             x = int.from_bytes(b[1:33], 'big')
             y = int.from_bytes(b[33:65], 'big')
-            return Point(BITCOIN.gen.G.curve, x, y)
+            return Point(cls.COIN.gen.G.curve, x, y)
 
         # for compressed version uncompress the full public key Point
         # first recover the y-evenness and the full x
@@ -66,11 +76,11 @@ class PublicKey(Point):
         x = int.from_bytes(b[1:], 'big')
 
         # solve y^2 = x^3 + 7 for y, but mod p
-        p = BITCOIN.gen.G.curve.p
+        p = cls.COIN.gen.G.curve.p
         y2 = (pow(x, 3, p) + 7) % p
         y = pow(y2, (p + 1) // 4, p)
         y = y if ((y % 2 == 0) == is_even) else p - y # flip if needed to make the evenness agree
-        return cls(BITCOIN.gen.G.curve, x, y)
+        return cls(cls.COIN.gen.G.curve, x, y)
 
     def encode(self, compressed, hash160=False):
         """ return the SEC bytes encoding of the public key Point """
@@ -97,6 +107,7 @@ class PublicKey(Point):
         # finally b58 encode the result
         b58check_address = b58encode(byte_address)
         return b58check_address
+
 
 # -----------------------------------------------------------------------------
 # convenience functions
