@@ -2,18 +2,16 @@
 # cryptos
 
 Bitcoin is hard to grasp since the parameters are chosen to make the coin unbreakable, however, for educational purposes we need something we can break.
-Thus, let me introduce **Dumbcoin** (based on `Z13` (group)[https://en.wikipedia.org/wiki/Cyclic_group]), e.g. the public key could be as simple as `(8,3)` for secret key `3`.
+Thus, let me introduce **Dumbcoin** (based on [cyclic group](https://en.wikipedia.org/wiki/Cyclic_group) `Z13`), e.g. the public key could be as simple as `(8,3)` for secret key `3`.
 It makes it easier to grasp, but vulnerable, however, it still has mechanics of a coin, kind of "I'm not like them, but I can pretend".
 
-Fork of (karpathy/cryptos)[https://github.com/karpathy/cryptos]  
+Based on (and fork of) [karpathy/cryptos](https://github.com/karpathy/cryptos)
 
 **WARNING**: don't put any money into this coin! while some sh*tcoins can be relatively safe, this one isn't (not even close) by design. In plain text: this is a f***ing retarded coin!
 
 # Differences with Bitcoin
 
-For comparison, in bitcoin elliptic group the secret key of `3` corresponds to the secret key of `(112711660439710606056748659173929673102114977341539408544630613555209775888121, 25583027980570883691656905877401976406448868254816295069919888960541586679410)`.
-
-
+For comparison, in bitcoin elliptic group the secret key of `3` corresponds to the public key `(112711660439710606056748659173929673102114977341539408544630613555209775888121, 25583027980570883691656905877401976406448868254816295069919888960541586679410)`, in dumbcoin this secret key corresponds to the public key `(8,3)`.
 
 
 ### SHA-256
@@ -30,10 +28,23 @@ $ python -m cryptos.sha256 testfile.txt
 
 ### Keys
 
-`getnewaddress.py` is a cli entryway to generate a new Bitcoin secret/public key pair and the corresponding (base58check compressed) address:
+`getnewaddress.py` is a cli entryway to generate a new Dumcoin or Bitcoin secret/public key pair and the corresponding (base58check compressed) address.
+
+Dumbcoin:
 
 ```bash
-$ python getnewaddress.py
+generated secret key:
+0x3
+corresponding public key:
+x: 8
+y: 3
+compressed dmb address (b58check format):
+1AjEyRmr9jrct6qQrYCEjHhZa4G8o1HBDm
+```
+
+Bitcoin:
+```bash
+$ python getnewaddress.py btc
 generated secret key:
 0xc322622e6a0033bb93ff666753f77cc8b819d274d9edea007b7e4b2af4caf025
 corresponding public key:
@@ -92,93 +103,5 @@ See `cryptos/block.py` for Block class, functions and utilities.
 
 ### Lightweight Node
 
-A lightweight Bitcoin Node that speaks a subset of the [Bitcoin protocol](https://en.bitcoin.it/wiki/Protocol_documentation) is in `cryptos/network.py`. This node connects to other nodes using Python's `socket`, performs version handshake and then can request block headers. E.g. we can walk the first 40,000 blocks (in batches of 2,000) and partially validate them. A Bitcoin full node would fetch the full block (not just headers) with all transactions and also validate those, etc. But a partial validation would look like:
-
-```python
-
-from io import BytesIO
-from cryptos.block import Block, GENESIS_BLOCK, calculate_new_bits
-from cryptos.network import SimpleNode
-from cryptos.network import (
-    GetHeadersMessage,
-    HeadersMessage,
-)
-
-# connect to a node and pretty please ask for
-# 20 block headers starting with the genesis block
-
-# Start with the genesis block
-# https://en.bitcoin.it/wiki/Genesis_block
-# class Block:
-#     version: int        # 4 bytes little endian
-#     prev_block: bytes   # 32 bytes, little endian
-#     merkle_root: bytes  # 32 bytes, little endian
-#     timestamp: int      # uint32, seconds since 1970-01-01T00:00 UTC
-#     bits: bytes         # 4 bytes, current target in compact format
-#     nonce: bytes        # 4 bytes, searched over in pow
-previous = Block.decode(BytesIO(GENESIS_BLOCK['main']))
-
-# okay now let's crawl the blockchain block headers
-node = SimpleNode(
-    host='mainnet.programmingbitcoin.com',
-    net='main',
-)
-node.handshake()
-
-blocks = [previous]
-for _ in range(20):
-
-    # request next batch of 2,000 headers
-    getheaders = GetHeadersMessage(start_block=bytes.fromhex(previous.id()))
-    node.send(getheaders)
-    headers = node.wait_for(HeadersMessage)
-
-    # extend our chain of block headers
-    blocks.extend(headers.blocks)
-
-    previous = headers.blocks[-1]
-    print(f"received another batch of blocks, now have {len(blocks)}")
-
-node.close()
-# we now have 40,001 blocks total, 80 bytes each in raw, so total of ~3.2MB of data
-
-# now (partially) validate blockchain integrity
-for i, block in enumerate(blocks):
-
-    # validate proof of work on this block
-    assert block.validate()
-
-    # validate pointer to the previous node matches
-    prev = blocks[i - 1]
-    expected_prev_block = b'\x00'*32 if i == 0 else bytes.fromhex(prev.id())
-    assert block.prev_block == expected_prev_block
-
-    # validate the proof of work target calculation on the block was correct
-    if i % 2016 == 0:
-        if i == 0:
-            # genesis block had hardcoded value for bits
-            expected_bits = bytes.fromhex('ffff001d')
-        else:
-            # recalculate the target at every epoch (2016 blocks), approx 2 week period
-            # note that Satoshi had an off-by-one bug in this calculation because we are
-            # looking at timestamp difference between first and last block in an epoch,
-            # so these are only 2015 blocks apart instead of 2016 blocks apart ¯\_(ツ)_/¯
-            prev_epoch = blocks[i - 2016]
-            time_diff = prev.timestamp - prev_epoch.timestamp
-            expected_bits = calculate_new_bits(prev.bits, time_diff)
-    assert block.bits == expected_bits
-
-    if i % 1000 == 0:
-        print(f"on block {i+1}/{len(blocks)}")
-```
-
-It feels very nice to independently at least partially verify the integrity of the block chain :)
-
-### Unit tests
-
-```bash
-$ pytest
-```
-
-### License
-MIT
+A lightweight Bitcoin Node that speaks a subset of the [Bitcoin protocol](https://en.bitcoin.it/wiki/Protocol_documentation) is in `cryptos/network.py`.
+To the best of my knowledge, there's no node running the dumbcoin protocol.
