@@ -5,6 +5,7 @@ A cli tool to brute force the private key of a given public key (straightforward
 import argparse
 from cryptos.keys import PublicKey
 from cryptos.dumbcoin import DUMBCOIN
+from cryptos.curves import Point
 
 def brute_force_dumbcoin(public_key: PublicKey, COIN=DUMBCOIN):
     for sk in range(COIN.gen.n):
@@ -28,6 +29,10 @@ if __name__ == '__main__':
     try:
         x, y = map(int, args.public_key.split(','))
         # Adjusting instantiation to pass x and y correctly
+        pt = Point(DUMBCOIN.gen.G.curve, x, y)
+        if not pt.is_valid():
+            print("Error: Invalid public key provided (it's not on the elliptic curve).")
+            exit(1)
         public_key = (x,y)
     except ValueError:
         print("Error: Public key must be provided in the format x,y where both are integers.")

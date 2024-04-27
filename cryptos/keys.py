@@ -59,7 +59,7 @@ class PublicKey(Point):
         assert isinstance(sk, (int, str))
         sk = int(sk, 16) if isinstance(sk, str) else sk
         coin = COIN if COIN is not None else cls.COIN
-        pk = sk * coin.gen.G
+        pk = sk * coin .gen.G
         return cls.from_point(pk)
 
     @classmethod

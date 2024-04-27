@@ -86,6 +86,12 @@ class Point:
             append += append
             k >>= 1
         return result
+    
+    def is_valid(self) -> bool:
+        """ return True if the point is on the curve, False otherwise """
+        if self == INF:
+            return True
+        return (self.y**2 - (self.x**3 + self.curve.a * self.x + self.curve.b)) % self.curve.p == 0
 
 @dataclass
 class Generator:
