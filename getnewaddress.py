@@ -41,7 +41,10 @@ def generate_address(network):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Bitcoin or Dumbcoin address')
-    parser.add_argument('network', choices=['bitcoin', 'btc', 'dumbcoin', 'dmb'], help='Specify the network (bitcoin/btc or dumbcoin/dmb)')
+    parser.add_argument('network', choices=['bitcoin', 'btc', 'dumbcoin', 'dmb'],
+                        help='Specify the network (bitcoin/btc or dumbcoin/dmb)',
+                        default='bitcoin',  # Set default value to 'dumbcoin'
+                        nargs='?')  # Make the argument optional
     args = parser.parse_args()
     generate_address(args.network)
 
