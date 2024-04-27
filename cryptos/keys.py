@@ -6,6 +6,7 @@ easy consistent shortcuts of the two without collision)
 
 import os
 import time
+import random
 
 from .curves import Point
 from .bitcoin import BITCOIN
@@ -16,15 +17,18 @@ from .ripemd160 import ripemd160
 # -----------------------------------------------------------------------------
 # Secret key generation. We're going to leave secret key as just a super plain int
 
-def gen_secret_key(n: int) -> int:
+def gen_secret_key(n: int, coin: str = 'btc') -> int:
     """
     n is the upper bound on the key, typically the order of the elliptic curve
     we are using. The function will return a valid key, i.e. 1 <= key < n.
     """
-    while True:
-        key = int.from_bytes(os.urandom(32), 'big')
-        if 1 <= key < n:
-            break # the key is valid, break out
+    if coin == 'btc':
+        while True:
+            key = int.from_bytes(os.urandom(32), 'big')
+            if 1 <= key < n:
+                break # the key is valid, break out
+    else: # dumbcoin
+        key = random.randint(1, n - 1)
     return key
 
 # -----------------------------------------------------------------------------
@@ -112,9 +116,9 @@ class PublicKey(Point):
 # -----------------------------------------------------------------------------
 # convenience functions
 
-def gen_key_pair():
+def gen_key_pair(COIN = BITCOIN):
     """ generate a (secret, public) key pair in one shot """
-    sk = gen_secret_key(BITCOIN.gen.n)
+    sk = gen_secret_key(COIN.gen.n)
     pk = PublicKey.from_sk(sk)
     return sk, pk
 

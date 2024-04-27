@@ -10,7 +10,6 @@ import argparse
 from cryptos.keys import gen_secret_key, PublicKey
 from cryptos.bitcoin import BITCOIN
 from cryptos.dumbcoin import DUMBCOIN
-import random
 
 def generate_address(network):
     if network in ['bitcoin', 'btc']:
@@ -23,10 +22,7 @@ def generate_address(network):
         raise ValueError("Invalid network option. Use 'bitcoin'/'btc' or 'dumbcoin'/'dmb'.")
 
     # generate a secret/public key pair
-    if coin == 'btc':
-        secret_key = gen_secret_key(crypto.gen.n)
-    else:
-        secret_key = random.randint(2, crypto.gen.n)
+    secret_key = gen_secret_key(crypto.gen.n, coin)
     public_key = PublicKey.from_sk(secret_key, COIN=crypto)
     print('generated secret key:')
     print(hex(secret_key))

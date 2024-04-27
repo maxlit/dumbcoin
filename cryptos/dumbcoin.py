@@ -4,16 +4,13 @@ Bitcoin-specific functions, classes, utilities and parameters
 
 from dataclasses import dataclass
 from .curves import Curve, Point, Generator
+from .bitcoin import Coin
 
 # -----------------------------------------------------------------------------
 # public API
 __all__ = ['DUMBCOIN']
 
 # -----------------------------------------------------------------------------
-
-@dataclass
-class Coin:
-    gen: Generator
 
 # -----------------------------------------------------------------------------
 
@@ -31,4 +28,4 @@ def dumbcoin_gen():
     return gen
 
 # create an object that can be imported from other modules
-DUMBCOIN = Coin(dumbcoin_gen())
+DUMBCOIN = Coin(dumbcoin_gen(), abbrev='dmb')

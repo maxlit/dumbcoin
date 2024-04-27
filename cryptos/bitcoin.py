@@ -14,6 +14,7 @@ __all__ = ['BITCOIN']
 @dataclass
 class Coin:
     gen: Generator
+    abbrev: str = 'btc'
 
 # -----------------------------------------------------------------------------
 

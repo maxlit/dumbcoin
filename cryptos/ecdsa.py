@@ -66,9 +66,9 @@ class Signature:
         frame = b''.join([bytes([0x30, len(content)]), content])
         return frame
 
-def sign(secret_key: int, message: bytes) -> Signature:
+def sign(secret_key: int, message: bytes, COIN = BITCOIN) -> Signature:
 
-    n = BITCOIN.gen.n
+    n = COIN.gen.n
 
     # hash the message and convert to integer
     # TODO: do we want to do this here? or outside? probably not here
@@ -77,7 +77,7 @@ def sign(secret_key: int, message: bytes) -> Signature:
     # generate a new secret/public key pair at random
     # TODO: make deterministic
     # TODO: make take constant time to mitigate timing attacks
-    k = gen_secret_key(n)
+    k = gen_secret_key(n, COIN.abbrev)
     P = PublicKey.from_sk(k)
 
     # calculate the signature
@@ -89,9 +89,9 @@ def sign(secret_key: int, message: bytes) -> Signature:
     sig = Signature(r, s)
     return sig
 
-def verify(public_key: Point, message: bytes, sig: Signature) -> bool:
+def verify(public_key: Point, message: bytes, sig: Signature, COIN = BITCOIN) -> bool:
 
-    n = BITCOIN.gen.n
+    n = COIN.gen.n
 
     # some super basic verification
     assert isinstance(sig.r, int) and 1 <= sig.r < n
@@ -104,7 +104,7 @@ def verify(public_key: Point, message: bytes, sig: Signature) -> bool:
     w = inv(sig.s, n)
     u1 = z * w % n
     u2 = sig.r * w % n
-    P = (u1 * BITCOIN.gen.G) + (u2 * public_key)
+    P = (u1 * COIN.gen.G) + (u2 * public_key)
     match = P.x == sig.r
 
     return match
