@@ -5,7 +5,9 @@ Bitcoin is hard to grasp since the parameters are chosen to make the coin unbrea
 Thus, let me introduce **Dumbcoin** (based on [cyclic group](https://en.wikipedia.org/wiki/Cyclic_group) `Z13`), e.g. the public key could be as simple as `(8,3)` for secret key `3`.
 It makes it easier to grasp, but vulnerable, however, it still has mechanics of a coin, kind of "I'm not like them, but I can pretend".
 
-Based on (and fork of) [karpathy/cryptos](https://github.com/karpathy/cryptos)
+Based on (and fork of) [karpathy/cryptos](https://github.com/karpathy/cryptos)  
+
+If you followed [A from-scratch tour of Bitcoin in Python](http://karpathy.github.io/2021/06/21/blockchain/), look up `blog.ipynb` from this repo, I re-wrote it partly in the light of Dumbcoin.
 
 **WARNING**: don't put any money into this coin! while some sh*tcoins can be relatively safe, this one isn't (not even close) by design. In plain text: this is a f***ing retarded coin!
 
