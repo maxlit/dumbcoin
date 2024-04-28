@@ -10,7 +10,7 @@ import random
 
 from .curves import Point
 from .bitcoin import BITCOIN
-from .dumbcoin import DUMBCOIN
+from .dumbercoin import DUMBERCOIN
 from .sha256 import sha256
 from .ripemd160 import ripemd160
 
@@ -27,7 +27,7 @@ def gen_secret_key(n: int, coin: str = 'btc') -> int:
             key = int.from_bytes(os.urandom(32), 'big')
             if 1 <= key < n:
                 break # the key is valid, break out
-    else: # dumbcoin
+    else: # dumbercoin
         key = random.randint(1, n - 1)
     return key
 

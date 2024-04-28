@@ -8,13 +8,13 @@ from .bitcoin import Coin
 
 # -----------------------------------------------------------------------------
 # public API
-__all__ = ['DUMBCOIN']
+__all__ = ['DUMBERCOIN']
 
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 
-def dumbcoin_gen():
+def dumbercoin_gen():
     # Bitcoin uses secp256k1: http://www.oid-info.com/get/1.3.132.0.10
     p = 0x000000000000000000000000000000000000000000000000000000000000000B # 11
     a = 0x0000000000000000000000000000000000000000000000000000000000000001
@@ -28,4 +28,4 @@ def dumbcoin_gen():
     return gen
 
 # create an object that can be imported from other modules
-DUMBCOIN = Coin(dumbcoin_gen(), abbrev='dmb')
+DUMBERCOIN = Coin(dumbercoin_gen(), abbrev='dmb')

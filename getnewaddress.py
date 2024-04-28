@@ -9,17 +9,17 @@ Specifically, the tool prints:
 import argparse
 from cryptos.keys import gen_secret_key, PublicKey
 from cryptos.bitcoin import BITCOIN
-from cryptos.dumbcoin import DUMBCOIN
+from cryptos.dumbercoin import DUMBERCOIN
 
 def generate_address(network):
     if network in ['bitcoin', 'btc']:
         coin = "btc"
         crypto = BITCOIN
-    elif network in ['dumbcoin', 'dmb']:
-        crypto = DUMBCOIN
+    elif network in ['dumbercoin', 'dmb']:
+        crypto = DUMBERCOIN
         coin = "dmb"
     else:
-        raise ValueError("Invalid network option. Use 'bitcoin'/'btc' or 'dumbcoin'/'dmb'.")
+        raise ValueError("Invalid network option. Use 'bitcoin'/'btc' or 'dumbercoin'/'dmb'.")
 
     # generate a secret/public key pair
     secret_key = gen_secret_key(crypto.gen.n, coin)
@@ -40,10 +40,10 @@ def generate_address(network):
     print(addr)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Generate Bitcoin or Dumbcoin address')
-    parser.add_argument('network', choices=['bitcoin', 'btc', 'dumbcoin', 'dmb'],
-                        help='Specify the network (bitcoin/btc or dumbcoin/dmb)',
-                        default='bitcoin',  # Set default value to 'dumbcoin'
+    parser = argparse.ArgumentParser(description='Generate Bitcoin or Dumbercoin address')
+    parser.add_argument('network', choices=['bitcoin', 'btc', 'dumbercoin', 'dmb'],
+                        help='Specify the network (bitcoin/btc or dumbercoin/dmb)',
+                        default='bitcoin',  # Set default value to 'dumbercoin'
                         nargs='?')  # Make the argument optional
     args = parser.parse_args()
     generate_address(args.network)

@@ -1,19 +1,19 @@
 
 # cryptos
 
-Bitcoin is hard to grasp since the parameters are chosen to make the coin unbreakable, however, for educational purposes we need something we can break.
-Thus, let me introduce **Dumbcoin** (based on [cyclic group](https://en.wikipedia.org/wiki/Cyclic_group) `Z13`), e.g. the public key could be as simple as `(8,3)` for secret key `3`.
+Bitcoin is hard to grasp since the parameters are chosen to make the coin unbreakable, however, for educational purposes we need something we can break, thus, we need a "dumber" coin, dumber than any dumbcoin you have in mind.  
+Thus, let me introduce **Dumbercoin** (based on [cyclic group](https://en.wikipedia.org/wiki/Cyclic_group) `Z13`), e.g. the public key could be as simple as `(8,3)` for secret key `3`.
 It makes it easier to grasp, but vulnerable, however, it still has mechanics of a coin, kind of "I'm not like them, but I can pretend".
 
 Based on (and fork of) [karpathy/cryptos](https://github.com/karpathy/cryptos)  
 
-If you followed [A from-scratch tour of Bitcoin in Python](http://karpathy.github.io/2021/06/21/blockchain/), look up `blog.ipynb` from this repo, I re-wrote it partly in the light of Dumbcoin.
+If you followed [A from-scratch tour of Bitcoin in Python](http://karpathy.github.io/2021/06/21/blockchain/), look up `blog.ipynb` from this repo, I re-wrote it partly in the light of Dumbercoin.
 
 **WARNING**: don't put any money into this coin! while some sh*tcoins can be relatively safe, this one isn't (not even close) by design. In plain text: this is a f***ing retarded coin!
 
 # Differences with Bitcoin
 
-For comparison, in bitcoin elliptic group the secret key of `3` corresponds to the public key `(112711660439710606056748659173929673102114977341539408544630613555209775888121, 25583027980570883691656905877401976406448868254816295069919888960541586679410)`, in dumbcoin this secret key corresponds to the public key `(8,3)`.
+For comparison, in bitcoin elliptic group the secret key of `3` corresponds to the public key `(112711660439710606056748659173929673102114977341539408544630613555209775888121, 25583027980570883691656905877401976406448868254816295069919888960541586679410)`, in dumbercoin this secret key corresponds to the public key `(8,3)`.
 
 
 ### SHA-256
@@ -32,7 +32,7 @@ $ python -m cryptos.sha256 testfile.txt
 
 `getnewaddress.py` is a cli entryway to generate a new Dumcoin or Bitcoin secret/public key pair and the corresponding (base58check compressed) address.
 
-Dumbcoin:
+Dumbercoin:
 
 ```bash
 generated secret key:
@@ -106,4 +106,4 @@ See `cryptos/block.py` for Block class, functions and utilities.
 ### Lightweight Node
 
 A lightweight Bitcoin Node that speaks a subset of the [Bitcoin protocol](https://en.bitcoin.it/wiki/Protocol_documentation) is in `cryptos/network.py`.
-To the best of my knowledge, there's no node running the dumbcoin protocol.
+To the best of my knowledge, there's no node running the dumbercoin protocol.
