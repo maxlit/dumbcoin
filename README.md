@@ -1,4 +1,4 @@
-![demo](./gifs/240511_dumbercoin_demo.gif)
+![demo](./240511_dumbercoin_demo.gif)
 
 # cryptos
 
