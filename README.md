@@ -1,3 +1,4 @@
+![demo](./gifs/240511_dumbercoin_demo.gif)
 
 # cryptos
 
@@ -9,7 +10,7 @@ Based on (and fork of) [karpathy/cryptos](https://github.com/karpathy/cryptos)
 
 If you followed [A from-scratch tour of Bitcoin in Python](http://karpathy.github.io/2021/06/21/blockchain/), look up `blog.ipynb` from this repo, I re-wrote it partly in the light of Dumbercoin.
 
-**WARNING**: don't put any money into this coin! while some sh*tcoins can be relatively safe, this one isn't (not even close) by design. In plain text: this is a f***ing retarded coin!
+**WARNING**: don't put any money into this coin! while some shitcoins can be relatively safe, this one isn't (not even close) by design. In plain text: *this is a damn retarded coin*!
 
 # Differences with Bitcoin
 
@@ -18,7 +19,7 @@ For comparison, in bitcoin elliptic group the secret key of `3` corresponds to t
 
 ### SHA-256
 
-My pure Python SHA-256 implementation closely following the [NIST FIPS 180-4](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf) spec, in `cryptos/sha256.py`. Since this is a from scratch pure Python implementation it is slow and obviously not to be used anywhere except for educational purposes. Example usage:
+repo's pure Python SHA-256 implementation closely following the [NIST FIPS 180-4](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf) spec, in `cryptos/sha256.py`. Since this is a from scratch pure Python implementation it is slow and obviously not to be used anywhere except for educational purposes. Example usage:
 
 ```bash
 $ echo "some test file lol" > testfile.txt
